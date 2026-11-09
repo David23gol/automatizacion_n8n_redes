@@ -1,0 +1,294 @@
+{
+  "name": "Facebook-Substack",
+  "nodes": [
+    {
+      "parameters": {
+        "url": "https://qello2311.substack.com/feed",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.rssFeedRead",
+      "typeVersion": 1.2,
+      "position": [
+        224,
+        0
+      ],
+      "id": "4dbc63e6-c094-404e-b0db-a2500ce1d135",
+      "name": "RSS Read"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://graph.facebook.com/v20.0/me/feed",
+        "sendQuery": true,
+        "queryParameters": {
+          "parameters": [
+            {
+              "name": "access_token",
+              "value": "EAATv3eZAAR6gBSfLwhDkTsioFdkQZBwnV9d9LhzKpJNTkOKsDnHMIo70NX9BR6P3WdsyWA81yf9ff8CZBjkTtZBJIZBl8eiymZAOVInbmriSK01uBZBkXJZAa7EEZAncrKomNBQ2I8hZA9SQ7iPZBoX9SVOn5Ltgu3izaRrDYUvuxKPEwZA7I9jVbhcEBACxxvF1w6Exv7v3tAZDZD"
+            },
+            {
+              "name": "link",
+              "value": "={{ $json.link }}"
+            },
+            {
+              "name": "message",
+              "value": "={{ $json.title }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.5,
+      "position": [
+        784,
+        0
+      ],
+      "id": "0a385351-d8c9-4ccb-9c0a-517ffb0d885b",
+      "name": "HTTP Request"
+    },
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "field": "hours",
+              "hoursInterval": 3
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.4,
+      "position": [
+        16,
+        0
+      ],
+      "id": "72075a49-bed6-4f2c-afa1-f3612814f041",
+      "name": "Schedule Trigger"
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.limit",
+      "typeVersion": 1,
+      "position": [
+        384,
+        0
+      ],
+      "id": "af83e987-1ca4-4955-bb06-694d08046174",
+      "name": "Limit"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "loose",
+            "version": 3
+          },
+          "conditions": [
+            {
+              "id": "f9113ad3-9a49-4b87-8508-796124a8241a",
+              "leftValue": "={{ $json.pubDate }}",
+              "rightValue": "={{ $now.minus({ hours: 24 }) }}",
+              "operator": {
+                "type": "dateTime",
+                "operation": "after"
+              }
+            },
+            {
+              "id": "85bf262e-d2ad-49e4-8587-53f80f0b00ed",
+              "leftValue": "",
+              "rightValue": "",
+              "operator": {
+                "type": "string",
+                "operation": "equals",
+                "name": "filter.operator.equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "looseTypeValidation": true,
+        "options": {}
+      },
+      "type": "n8n-nodes-base.filter",
+      "typeVersion": 2.3,
+      "position": [
+        560,
+        0
+      ],
+      "id": "81e27f75-3615-4222-bb24-de7fb17cf1ac",
+      "name": "Filter"
+    },
+    {
+      "parameters": {
+        "operation": "append",
+        "documentId": {
+          "__rl": true,
+          "value": "15ZvKzO4LNzZ2OmGXpcL3ikxEhD3k0e0kMwFnyuMVh60",
+          "mode": "list",
+          "cachedResultName": "Registro Capítulos Substack - Dalvi Cuello",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/15ZvKzO4LNzZ2OmGXpcL3ikxEhD3k0e0kMwFnyuMVh60/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Hoja 1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/15ZvKzO4LNzZ2OmGXpcL3ikxEhD3k0e0kMwFnyuMVh60/edit#gid=0"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "Capítulo": "={{ $('RSS Read').item.json.title }}",
+            "Enlace": "={{ $('RSS Read').item.json.link }}",
+            "Fecha de Publicación": "={{ $('RSS Read').item.json.pubDate }}",
+            "Estado": "Publicado",
+            "Facebook Post ID": "={{ $json.id }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "Capítulo",
+              "displayName": "Capítulo",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Enlace",
+              "displayName": "Enlace",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Fecha de Publicación",
+              "displayName": "Fecha de Publicación",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Facebook Post ID",
+              "displayName": "Facebook Post ID",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Estado",
+              "displayName": "Estado",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        960,
+        0
+      ],
+      "id": "b0b5245d-beb0-4926-a28e-4a71deb03791",
+      "name": "Append row in sheet",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "e9YoMlYtKKA5N0y6",
+          "name": "Google Sheets account 2"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "RSS Read": {
+      "main": [
+        [
+          {
+            "node": "Limit",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Schedule Trigger": {
+      "main": [
+        [
+          {
+            "node": "RSS Read",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Limit": {
+      "main": [
+        [
+          {
+            "node": "Filter",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Filter": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTTP Request": {
+      "main": [
+        [
+          {
+            "node": "Append row in sheet",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate",
+    "timeSavedMode": "fixed",
+    "callerPolicy": "workflowsFromSameOwner",
+    "availableInMCP": false
+  },
+  "versionId": "ae759cac-70c1-4dce-af25-9c3a03afb29b",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "2b7a5a168c473b11de918273ab4d0916cee74cba8e97f272b59929b58c27066d"
+  },
+  "nodeGroups": [],
+  "id": "pTiJgUTm8aw9oOxM",
+  "tags": []
+}
