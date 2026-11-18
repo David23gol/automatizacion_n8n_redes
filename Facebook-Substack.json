@@ -24,7 +24,7 @@
           "parameters": [
             {
               "name": "access_token",
-              "value": "EAATv3eZAAR6gBSfLwhDkTsioFdkQZBwnV9d9LhzKpJNTkOKsDnHMIo70NX9BR6P3WdsyWA81yf9ff8CZBjkTtZBJIZBl8eiymZAOVInbmriSK01uBZBkXJZAa7EEZAncrKomNBQ2I8hZA9SQ7iPZBoX9SVOn5Ltgu3izaRrDYUvuxKPEwZA7I9jVbhcEBACxxvF1w6Exv7v3tAZDZD"
+              "value": "TU_PAGE_ACCES_TOKEN_AQUI"
             },
             {
               "name": "link",
@@ -137,7 +137,7 @@
           "value": "gid=0",
           "mode": "list",
           "cachedResultName": "Hoja 1",
-          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/15ZvKzO4LNzZ2OmGXpcL3ikxEhD3k0e0kMwFnyuMVh60/edit#gid=0"
+          "cachedResultUrl": "TU_SPREADSHEET_ID_AQUI"
         },
         "columns": {
           "mappingMode": "defineBelow",
